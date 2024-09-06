@@ -1,6 +1,7 @@
 import pymavlink
 import serial.tools.list_ports
 import time
+import socket
 from pymavlink import mavutil
 import re
 
@@ -62,6 +63,7 @@ class Link:
     
     def CheckAvailableTCP():
     #returns avilable Tcp ports
+
 
         return []
 
