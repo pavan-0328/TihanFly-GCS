@@ -1,0 +1,59 @@
+.ActionBar {
+    width: 150px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+    position: relative;
+    left: 0;
+    top: 20px;
+}
+
+.ActionBar button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: rgba(255, 131, 15, 0.979);
+    color: rgb(11, 26, 114);
+    border: none;
+    border-radius: 5px;
+    text-align: left;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.ActionBar button:hover {
+    background-color: rgb(255, 161, 77);
+    color: white;
+}
+
+.waypoint-actions {
+    display: none;
+    position: absolute;
+    left: 100%;
+    margin-left: 10px;
+    background-color: rgba(255, 131, 15, 0.979);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.waypoint-actions button {
+    width: 150px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: rgba(255, 131, 15, 0.979);
+    color: rgb(11, 26, 114);
+    border: none;
+    border-radius: 5px;
+    text-align: left;
+    transition: background-color 0.3s, color 0.3s;
+    margin-bottom: 10px;
+}
+
+.waypoint-actions button:hover {
+    background-color: white;
+    color: skyblue;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}

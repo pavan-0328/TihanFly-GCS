@@ -5,6 +5,24 @@ import socket
 from pymavlink import mavutil
 import re
 
+class UDP:
+
+    def get_local_ip():
+        hostname = socket.gethostname()
+        localip = socket.gethostbyname(hostname)
+        return localip
+
+    def __init__(self):
+        self.udp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        ip = UDP.get_loca_ip()
+        self.udp_sock.bind((ip, 14550))
+        self.availConn = {}
+
+    def checkOnline(self):
+        pass
+
+    
+
 
 class Link:
 
@@ -63,12 +81,14 @@ class Link:
     
     def CheckAvailableTCP():
     #returns avilable Tcp ports
-
-
+        
         return []
 
     def CheckAvailableUDP():
     #returns available Udp ports
+        udp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        target_ip = "192"
+        target_port = 8080
 
         return []
 
