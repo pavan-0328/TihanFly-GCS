@@ -1,7 +1,10 @@
 //Base class for rest of the MapProviders
 
-class MapProvider {
+const { XYZ } = require("ol/source");
+
+class MapProvider extends XYZ{      
     constructor(mapName, referrer, imageFormat, averageSize = 13652, mapStyle = 'CustomMap') {
+        super()
         this._mapName = mapName;
         this._referrer = referrer;
         this._imageFormat = imageFormat;

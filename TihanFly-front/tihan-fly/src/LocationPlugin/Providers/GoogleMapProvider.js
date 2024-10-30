@@ -26,21 +26,25 @@ class GoogleMapProvider extends MapProvider {
         };
         sec1 = sec.sec1;
         sec2 = sec.sec2;
+        //if zoom goes beyond 22 stop it
+        if(zoom > 22) return "";
         return 'http://mt{0}.google.com/vt/{1}={2}&hl={3}&x={4}&y={5}&z={6}&s={7}&scale={8}'
             .replace('{0}', () => {
-                return (zoom[1] + 2 * zoom[2]) % 3;
+                return (x + 2 * y) % 3;
             })
-            .replace('{1}','lyrs')
-            .replace('{2}', 's')
+            .replace('{1}',this._versionRequest)
+            .replace('{2}', this._version)
             .replace('{3}', 'en') // Language parameter (can be customized)
-            .replace('{4}', zoom[1])
-            .replace('{5}', zoom[2])
-            .replace('{6}', zoom[0])
-            .replace('{7}', 'Galileo')
-            .replace('{8}', '1');
+            .replace('{4}', x)
+            .replace('{5}', y)
+            .replace('{6}', zoom)
+            .replace('{7}', this._secGoogleWord)
+            .replace('{8}', this._scale);
     }
 
-    
+    tileUrlFunction(coordinates) {
+        return this.getTileURL(coordinates[0],coordinates[1],coordinates[2]);  
+    }
 }
 
 // Specific Google Map types that inherit from GoogleMapProvider
