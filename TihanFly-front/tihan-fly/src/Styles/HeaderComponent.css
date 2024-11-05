@@ -5,7 +5,7 @@
     background: linear-gradient(to right, rgb(240, 171, 69), rgb(246, 247, 247));
     padding: 5px 20px;
     position: relative;
-    z-index: 1000;
+    z-index: 2;
     max-width: auto;
 }
 
@@ -32,7 +32,26 @@
     display: flex;
     align-items: center;
 }
-
+.navbar .input-form button{
+    padding: 10px;
+    font-size: 16px;
+    background-color: rgba(255, 131, 15, 0.979);
+    color: rgb(11, 26, 114);
+    border: none;
+    border-radius: 5px;
+    text-align: left;
+    transition: background-color 0.3s, color 0.3s;
+}
+.navbar button{
+    padding: 10px;
+    font-size: 16px;
+    background-color: rgba(255, 131, 15, 0.979);
+    color: rgb(11, 26, 114);
+    border: none;
+    border-radius: 5px;
+    text-align: left;
+    transition: background-color 0.3s, color 0.3s;
+}
 .navbar input[type="text"] {
     padding: 8px;
     font-size: 16px;
@@ -41,16 +60,6 @@
     border: 1px solid #ccc;
 }
 
-.navbar button {
-    padding: 8px 12px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: skyblue;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
-}
 
 .navbar button:hover {
     background-color: deepskyblue;

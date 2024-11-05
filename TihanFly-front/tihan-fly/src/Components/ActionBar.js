@@ -3,21 +3,30 @@ import Button    from './Buttons/Button';
 import ArmButton from './Buttons/ArmButton';
 import Takeoff from './Buttons/Takeoff';
 const ActionBar = () =>{
+
+    const handleLand = ()=>{
+        alert("Landing the Drone");
+    }
+    
+    const handleRTL = ()=>{
+        alert("RTL activated");
+    }
     return(
         <div>
         <div className="ActionBar">
             <ArmButton/>
             <Takeoff/>
-            <button onclick="sendCommand('land')"><b>Land</b></button>
-            <button id="waypointButton" onclick="toggleWaypointActions()"><b>Waypoint</b></button>
+            <Button onClick={handleLand}>Land</Button>
+            <Button>Waypoint</Button>
             <div class="waypoint-actions" id="waypointActions">
-                <button onclick="startAddingWaypoints()">Add Waypoint</button>
-                <button onclick="sendMarkers()">Send Markers</button>
-                <button onclick="clearMarkers()">Clear Markers</button>
+                <Button>Add Waypoint</Button>
+                <Button>Upload</Button>
+                <Button>Clear</Button>
             </div>
-            <button onclick="showModeDropdown()"><b>Set Flight Mode</b></button>
-            <button onclick="sendCommand('rtl')"><b>RTL</b></button>
-            <button href="http://192.168.20.162:8080/images_page"> <b>Sprey</b> </button>
+            <Button >Set Flight Mode</Button>
+            <Button onClick={handleRTL}>RTL</Button>
+            <Button>Spray</Button>
+            <Button>Calibrate Level</Button>    
             <div>  </div>
         </div>
         </div>

@@ -1,29 +1,38 @@
 import { useState } from "react";
 import tihanFly from '../Assets/tihan.png'
+import Button from "./Buttons/Button";
 import '../Styles/HeaderComponent.css'
+
 const HearderComponent = () =>{
 
-        const [inputValue, setInputValue] = useState('');
+    const [connString, setconnString] = useState('');
+    const [isConnected, setisConnected] = useState(false);
 
-    const handleInputChange= (e) =>{
-        setInputValue(e.target.value);
-    };
-
-    const ConnHandle= (e) => {
+    const handleConnect= (e) => {
         e.preventDefault();
-        alert('Input VALUE : ${inputValue}');
+        console.log(connString);
+        setisConnected(!isConnected);
+        setconnString("");
     }
 
     return(
         <div>
         <div className="navbar">
-            <form onSubmit={ConnHandle} className="input-form">
-                <input type="text" className="vehicle-connect" placeholder="Connection URL..."
-                        value={inputValue}
-                        onChange={handleInputChange}            
-                />
-                <button type="submit">Connect</button>
-            </form>
+            {!isConnected && 
+                <div className="input-form">
+                <form onSubmit={handleConnect}>
+                    <input type="text" value={connString} onChange={e=>{
+                        e.preventDefault();
+                        setconnString(e.target.value);
+                    }}/>
+                    <button typeof="submit">Connect</button>
+                </form>
+                </div>
+            }
+            {isConnected && <button onClick={e=>{
+                e.preventDefault();
+                setisConnected(false);
+            }}><b>Disconnect</b></button>}   
             <div class="heading-container">
                 <h1><b>TiHAN FLY</b></h1>
             </div>
