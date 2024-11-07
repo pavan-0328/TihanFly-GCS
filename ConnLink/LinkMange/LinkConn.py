@@ -241,4 +241,11 @@ class DroneUtil:
                     return 200
                 else :
                     return 400
-        
+    
+    def getlocation(self,vehicle):
+        msg = vehicle.recv_match(type='GLOBAL_POSITION_INT', blocking=True)
+        lat = msg.lat / 1e7  # Latitude in degrees
+        lon = msg.lon / 1e7  # Longitude in degrees
+        alt = msg.relative_alt / 1000.0  # Altitude above ground in meters (millimeters to meters)
+    
+        return {"lat": lat,"lon" : lon,"alt": alt}
