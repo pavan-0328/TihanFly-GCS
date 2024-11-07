@@ -1,8 +1,14 @@
-from tkinter import *
-from tkinter import ttk
-root = Tk()
-frm = ttk.Frame(root, padding=10)
-frm.grid()
-ttk.Label(frm, text="Hello World!").grid(column=0, row=0)
-ttk.Button(frm, text="Quit", command=root.destroy).grid(column=1, row=0)
-root.mainloop()
+from flask import Flask,jsonify
+from flask_cors import CORS
+from LinkMange.LinkConn import Link
+
+avail_conn = Link()
+app = Flask(__name__)
+
+@app.route('/module/conn',methods=['GET'])
+def available_conn():
+    avail_conn.Refresh()
+    return str(avail_conn.droneCnt)
+
+if __name__=='__main__':
+    app.run()

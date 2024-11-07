@@ -21,13 +21,11 @@ class UDP:
     def checkOnline(self):
         pass
 
-    
-
 
 class Link:
 
     def __init__(self):
-        self.droneList = []
+        self.droneList = {}
         self.droneCnt = 0
         self.Refresh()
     
@@ -147,11 +145,11 @@ class Link:
     def EstablishConn():
         online = Link.CheckAvailablePorts()
         
-        droneDict = []
+        droneDict = {}
         cnt = 1
         for port in online:
             temp_conn = mavutil.mavlink_connection(port, baud=57600, timeout=4)
-            droneDict.append(temp_conn)
+            droneDict[cnt] = temp_conn
             cnt+=1
         return droneDict
     
