@@ -153,3 +153,92 @@ class Link:
             cnt+=1
         return droneDict
     
+class DroneUtil:
+
+    def __init__(self):
+        self.flightModes = {
+        'MODE_STABILIZE': 'STABILIZE',
+        'MODE_ACRO': 'ACRO',
+        'MODE_ALTHOLD': 'ALT_HOLD',
+        'MODE_AUTO': 'AUTO',
+        'MODE_GUIDED': 'GUIDED',
+        'MODE_LOITER': 'LOITER',
+        'MODE_RTL': 'RTL',
+        'MODE_CIRCLE': 'CIRCLE',
+        'MODE_POSITION': 'POSITION',
+        'MODE_LAND': 'LAND',
+        'MODE_OF_LOITER': 'OF_LOITER',
+        'MODE_DRIFT': 'DRIFT',
+        'MODE_SPORT': 'SPORT',
+        'MODE_FLIP': 'FLIP',
+        'MODE_AUTOTUNE': 'AUTOTUNE',
+        'MODE_POSHOLD': 'POSHOLD',
+        'MODE_BRAKE': 'BRAKE',
+        'MODE_THROW': 'THROW',
+        'MODE_AVOID_ADSB': 'AVOID_ADSB',
+        'MODE_GUIDED_NOGPS': 'GUIDED_NOGPS',
+        'MODE_SMART_RTL': 'SMART_RTL',
+        'MODE_FLOWHOLD': 'FLOWHOLD',
+        'MODE_FOLLOW': 'FOLLOW',
+        'MODE_ZIGZAG': 'ZIGZAG',
+        'MODE_SYSTEMID': 'SYSTEMID',
+        'MODE_AUTOROTATE': 'AUTOROTATE',
+        'MODE_AUTO_RTL': 'AUTO_RTL'
+        }   
+
+    def arm(self,vehicle):
+        vehicle.mav.command_long_send(
+            vehicle.target_system,    # Target system ID
+            vehicle.target_component, # Target component ID
+            mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, # Command to arm/disarm
+            0,    # Confirmation (0 = no confirmation)
+            1,    # First param: 1 to arm, 0 to disarm
+            0, 0, 0, 0, 0, 0  # Unused parameters
+        )
+
+        vehicle.motors_armed_wait()
+        
+        return 200
+    
+    def disarm(self,vehicle):
+        vehicle.mav.command_long_send(
+            vehicle.target_system,    # Target system ID
+            vehicle.target_component, # Target component ID
+            mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM, # Command to arm/disarm
+            0,    # Confirmation (0 = no confirmation)
+            0,    # First param: 1 to arm, 0 to disarm
+            0, 0, 0, 0, 0, 0  # Unused parameters
+        )
+        return 200
+    
+    def takeoff(self,vehicle,alt):
+        mode = 'GUIDED'
+        if self.changemode(vehicle=vehicle,mode=mode) != 200:
+            return 400
+        vehicle.mav.command_long_send(
+            vehicle.target_system,    # Target system
+            vehicle.target_component, # Target component
+            mavutil.mavlink.MAV_CMD_NAV_TAKEOFF, # Takeoff command
+            0,    # Confirmation
+            0,    # Param 1 (min pitch angle)
+            0, 0, 0, 0, 0,  # Param 2-6 (unused)
+            alt  # Param 7: Desired takeoff altitude in meters
+        )
+
+        while True:
+            altitude_msg = vehicle.recv_match(type='GLOBAL_POSITION_INT', blocking=True)
+            if altitude_msg and altitude_msg.relative_alt >= alt * 1000:  # Altitude is in millimeters
+                print(f"Reached target altitude of {alt} meters!")
+                return 200
+        return 400
+    
+    def changemode(self,vehicle,mode):
+        if mode in self.flightModes.values():
+            vehicle.set_mode(mode)
+            while True:
+                ack_msg = vehicle.recv_match(type='COMMAND_ACK', blocking=True)
+                if ack_msg and ack_msg.command == mavutil.mavlink.MAV_CMD_DO_SET_MODE:
+                    return 200
+                else :
+                    return 400
+        
