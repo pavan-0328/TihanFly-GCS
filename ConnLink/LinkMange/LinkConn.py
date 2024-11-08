@@ -196,7 +196,7 @@ class DroneUtil:
             0, 0, 0, 0, 0, 0  # Unused parameters
         )
 
-        vehicle.motors_armed_wait()
+        #vehicle.motors_armed_wait()
         
         return 200
     
@@ -236,11 +236,12 @@ class DroneUtil:
         if mode in self.flightModes.values():
             vehicle.set_mode(mode)
             while True:
-                ack_msg = vehicle.recv_match(type='COMMAND_ACK', blocking=True)
-                if ack_msg and ack_msg.command == mavutil.mavlink.MAV_CMD_DO_SET_MODE:
-                    return 200
-                else :
-                    return 400
+                msg = vehicle.recv_match(type='HEARTBEAT', blocking=True)
+                current_mode = msg.custom_mode
+                if current_mode == 0:
+                    print(f"Mode successfully changed to {mode}")
+                    break
+            return 200
     
     def getlocation(self,vehicle):
         msg = vehicle.recv_match(type='GLOBAL_POSITION_INT', blocking=True)

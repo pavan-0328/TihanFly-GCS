@@ -15,7 +15,7 @@ def available_conn():
 @app.route('/module/arm/<int:drone_id>',methods=['GET'])
 def arm(drone_id):
     drone_util.arm(avail_conn.droneList[drone_id])
-    return str(drone_id)
+    return jsonify({"status": "Armed Successfully"}),200
 
 
 @app.route('/module/disarm/<int:drone_id>',methods=['GET'])
@@ -27,12 +27,12 @@ def disarm(drone_id):
 def takeoff(drone_id):
     data = request.get_json()
     drone_util.takeoff(avail_conn.droneList[drone_id],data.get('Alt'))
-    return str(drone_id)
+    return 200
 
 @app.route('/module/land/<int:drone_id>',methods=['GET'])
 def land(drone_id):
     drone_util.changemode(avail_conn.droneList[drone_id],'LAND')
-    return str(drone_id)
+    return 200
 
 @app.route('/module/get-location/<int:drone_id>',methods=['GET'])
 def getlocation(drone_id):
@@ -41,7 +41,9 @@ def getlocation(drone_id):
 
 @app.route('/module/change-mode/<int:drone_id>',methods=['POST','GET'])
 def changemode(drone_id):
-    return str(drone_id)
+    data = request.get_json()
+    drone_util.changemode(avail_conn.droneList[drone_id],data.get('Mode'))
+    return 200
 
 
 if __name__=='__main__':
