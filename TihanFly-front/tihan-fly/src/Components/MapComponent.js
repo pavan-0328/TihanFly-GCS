@@ -1,24 +1,28 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import 'ol/ol.css';
-import { Map, View } from 'ol';
+import { Map, View} from 'ol';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import { Feature } from 'ol';
 import { Point } from 'ol/geom';
-import { Icon, Style } from 'ol/style';
+import { Icon, Style,Fill,Text } from 'ol/style';
 import { fromLonLat } from 'ol/proj';
+import { createStringXY } from 'ol/coordinate';
+import { MousePosition } from 'ol-react/lib/control';
 import { GoogleSatelliteMapProvider } from '../LocationPlugin/Providers/GoogleMapProvider';
 import '../Styles/MapComponent.css'
+
+import Pin from '../Assets/placeholder.png'
+
 const position = [78.126737,17.6017851];
 
 const MapComponent = () => {
   const mapRef = useRef(null);
+  const [mapCenter, setMapCenter] = useState([]);
 
   useEffect(() => {
-    
-
     const map = new Map({
       target: mapRef.current,
       layers: [
@@ -32,7 +36,8 @@ const MapComponent = () => {
       })
     });
 
-    const addMarker = (lon, lat) => {
+    
+    const addMarker = (lon, lat,label) => {
       const markerCoordinates = fromLonLat([lon, lat]);
 
       // Create a feature to represent the marker
@@ -44,10 +49,19 @@ const MapComponent = () => {
       markerFeature.setStyle(
         new Style({
           image: new Icon({
-            anchor: [0.5, 1],
-            src: 'https://openlayers.org/en/latest/examples/data/icon.png', // Custom icon URL
+            anchor: [0.5,1],
+            scale:0.1,
+            src: Pin
           }),
-        })
+          text: new Text({
+            text: label,
+            offsetY: -31,
+            // Adjusts the label's vertical position relative to the marker
+            fill: new Fill({ color: '#000' }),  // Text color
+            font: '20px sans-serif',
+          }),
+        }),
+       
       );
 
       // Create a vector source and layer to hold the marker
@@ -62,14 +76,28 @@ const MapComponent = () => {
       // Add the marker layer to the map
       map.addLayer(markerLayer);
     };
+    
+    const mousePositionControl = new MousePosition({
+      coordinateFormat: createStringXY(4), // Display coordinates with 4 decimal places
+      projection: 'EPSG:4326', // Set projection to latitude/longitude
+      className: 'mouse-position', // CSS class for styling
+      target: document.getElementById('mouse-position'), // HTML element for the position
+      undefinedHTML: 'Mouse outside map', // Text shown when mouse is outside the map
+    });
 
+    map.addControl(mousePositionControl);
     // Example: Add a marker at specified coordinates
-    addMarker(78.126737,17.6017851);
+    addMarker(78.126737,17.6017851,"1");
+    addMarker(78.126746,17.6017851,"2");
+    addMarker(78.126746,17.6018881,"3");
 
     return () => map.setTarget(null);
   }, []);
 
-  return <div ref={mapRef} className='map-component' />;
+  return<div>
+        <div ref={mapRef} className='map-component' />
+        <div id="mouse-position" style={{ padding: '10px', fontSize: '14px' }}>Mouse position: </div>
+      </div>;
 
   
   };
