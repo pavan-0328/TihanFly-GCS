@@ -77,15 +77,6 @@ const MapComponent = () => {
       map.addLayer(markerLayer);
     };
     
-    const mousePositionControl = new MousePosition({
-      coordinateFormat: createStringXY(4), // Display coordinates with 4 decimal places
-      projection: 'EPSG:4326', // Set projection to latitude/longitude
-      className: 'mouse-position', // CSS class for styling
-      target: document.getElementById('mouse-position'), // HTML element for the position
-      undefinedHTML: 'Mouse outside map', // Text shown when mouse is outside the map
-    });
-
-    map.addControl(mousePositionControl);
     // Example: Add a marker at specified coordinates
     addMarker(78.126737,17.6017851,"1");
     addMarker(78.126746,17.6017851,"2");

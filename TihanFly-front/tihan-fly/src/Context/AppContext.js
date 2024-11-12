@@ -1,10 +1,10 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import { Children, createContext,useRef } from "react";
 
 const AppContext = createContext();
 
 const AppContextProvider = ({children}) => {
-    const selectedDrones = useRef([]);
+    const [selectedDrones,addSelected] = useState([1]);
     return (
         <AppContext.Provider value={{selectedDrones}}>
             {children}

@@ -1,45 +1,24 @@
 import { AppContext } from "../../Context/AppContext";
 import Button from "./Button";
 import { useContext, useState } from "react";
-
+import Bridge from "../../Networking/Bridge";
 
 const ArmButton = () => {
     const [InnerText, setInnerText] = useState("Arm");
     const {selectedDrones} = useContext(AppContext)
-
+    const bridge = new Bridge();
 
     const handleArmDisarm = async ()=>{
+        
         if(InnerText === "Arm"){
-            const error = []
-            for(const drone of selectedDrones){
-                let uri = "http://127.0.0.1:5000/module/arm/"+drone
-                const res = await fetch(uri, {
-                    method: "GET",
-                    headers: {
-                        'Content-Type': 'applicationt/json',
-                    }
-                })
-                if(!res.ok) {
-                    error.push(drone)
-                }
-            }
+            let res = []
+            res = await bridge.send({},"ARM",selectedDrones)
+            console.log(res)
             setInnerText("Disarm");
         }
         else{
-            const error = []
-            for(const drone of selectedDrones){
-                let uri = "http://127.0.0.1:5000/module/disarm/"+drone
-                const res = await fetch(uri, {
-                    method: "GET",
-                    headers: {
-                        'Content-Type': 'applicationt/json',
-                    }
-                })
-                if(!res.ok) {
-                    error.push(drone)
-                }
-            }
-            
+            let res = []
+            res = await bridge.send({},"DISARM",selectedDrones)
             setInnerText("Arm");
         }
     };

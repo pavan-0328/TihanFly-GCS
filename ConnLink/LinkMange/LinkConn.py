@@ -215,6 +215,8 @@ class DroneUtil:
         mode = 'GUIDED'
         if self.changemode(vehicle=vehicle,mode=mode) != 200:
             return 400
+        self.arm(vehicle=vehicle)
+        alt = float(alt)
         vehicle.mav.command_long_send(
             vehicle.target_system,    # Target system
             vehicle.target_component, # Target component

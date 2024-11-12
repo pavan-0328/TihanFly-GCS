@@ -2,14 +2,21 @@ import '../Styles/ActionBar.css'
 import Button    from './Buttons/Button';
 import ArmButton from './Buttons/ArmButton';
 import Takeoff from './Buttons/Takeoff';
-const ActionBar = () =>{
+import Bridge from '../Networking/Bridge';
+import { AppContext, AppContextProvider } from '../Context/AppContext';
+import { useContext } from 'react';
 
-    const handleLand = ()=>{
+const ActionBar = () =>{
+    const {selectedDrones} = useContext(AppContext);
+    const bridge = new Bridge();
+    const handleLand = async()=>{
         alert("Landing the Drone");
+        await bridge.send({},"LAND",selectedDrones);
     }
     
-    const handleRTL = ()=>{
+    const handleRTL = async()=>{
         alert("RTL activated");
+        await bridge.send({"Mode":"RTL"},"MODE_CHANGE",selectedDrones);
     }
     return(
         <div>
