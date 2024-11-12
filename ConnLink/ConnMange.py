@@ -43,7 +43,8 @@ def getlocation(drone_id):
 def changemode(drone_id):
     data = request.get_json()
     drone_util.changemode(avail_conn.droneList[drone_id],data.get('Mode'))
-    return jsonify({"status": f'Mode changed to {data.get('Mode')} Successfully'}),200
+    
+    return jsonify({"status": f"Mode changed to {data.get('Mode')} Successfully"}),200
 
 
 if __name__=='__main__':
