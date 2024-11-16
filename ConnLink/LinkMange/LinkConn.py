@@ -40,7 +40,8 @@ class Link:
     def AddLink(self, conn_str):
         if Link.CheckConnHealth(conn_str) != -1:
             temp_conn = mavutil.mavlink_connection(conn_str,baud=57600,wait=4)
-            self.droneList.append(temp_conn)
+            self.droneList[self.droneCnt+1] = temp_conn
+            self.droneCnt+=1
         else:
             print("Invalid Connection")
 

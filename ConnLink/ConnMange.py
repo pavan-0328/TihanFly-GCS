@@ -10,7 +10,13 @@ CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
 @app.route('/api/',methods=['GET'])
 def available_conn():
     avail_conn.Refresh()
-    return str(avail_conn.droneCnt)
+    return jsonify({"DroneKeys": avail_conn.droneList.keys()})
+
+@app.route('/api/add-drone',methods=['POST'])
+def addDrone():
+    data = request.get_json()
+    avail_conn.AddLink(data['connUri'])
+    return jsonify({"DroneKeys": avail_conn.droneList.keys()}),200
 
 @app.route('/api/arm/<int:drone_id>',methods=['GET'])
 def arm(drone_id):
@@ -37,7 +43,7 @@ def land(drone_id):
 @app.route('/api/get-location/<int:drone_id>',methods=['GET'])
 def getlocation(drone_id):
     loc = drone_util.getlocation(avail_conn.droneList[drone_id])
-    return jsonify(loc)
+    return jsonify({"id":drone_id,"loc": loc})
 
 @app.route('/api/change-mode/<int:drone_id>',methods=['POST','GET'])
 def changemode(drone_id):
