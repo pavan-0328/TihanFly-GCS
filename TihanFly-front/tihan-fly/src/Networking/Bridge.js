@@ -28,12 +28,30 @@ class Bridge{
             "TAKE_OFF":{
                 CMD:'/takeoff/',
                 METHOD:"POST"
+            },
+            "FETCH_LIST":{
+                CMD:'/hi',
+                METHOD:"GET"
             }
         };
     }
+    async simple_send(data={},cmd){
+        const {CMD, METHOD}= this.#COMMAND_DICT[cmd];
+        const res = await fetch(this.#BASE_URI+CMD,{
+            method: METHOD,
+            headers:{
+                "Content-Type":"application/json"
+            }
+        });
+        if(res.ok){
+            data = await res.json();
+            return data;
+        }
+        return res.body;
+    }
     async send(data={},cmd,drone_ids){
+        const res = [];
         for(const drone_id of drone_ids){
-            let res = [];
             console.log(drone_id)
             if(this.#COMMAND_DICT.hasOwnProperty(cmd)){
                 const {CMD, METHOD}= this.#COMMAND_DICT[cmd];
@@ -45,7 +63,8 @@ class Bridge{
                             "Content-Type":"application/json"
                         }
                     });
-                    res.push(temp_res);
+                    const data = await temp_res.json();
+                    res.push(data);
                 }else{
                     temp_res  = await fetch(this.#BASE_URI+CMD+drone_id,{
                         method: METHOD,
@@ -54,12 +73,12 @@ class Bridge{
                         },
                         body: JSON.stringify(data)
                     });
-                    res.push(temp_res)
+                    const data = await temp_res.json();
+                    res.push(data);
                 }  
-            }else{
-                res.push({"ERROR": "Command not found"});
             }
         }
+        return res;
     }
 }
 

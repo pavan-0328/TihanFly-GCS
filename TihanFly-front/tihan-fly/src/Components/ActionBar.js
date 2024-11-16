@@ -7,7 +7,7 @@ import { AppContext, AppContextProvider } from '../Context/AppContext';
 import { useContext } from 'react';
 
 const ActionBar = () =>{
-    const {selectedDrones} = useContext(AppContext);
+    const {selectedDrones,addSelected} = useContext(AppContext);
     const bridge = new Bridge();
     const handleLand = async()=>{
         alert("Landing the Drone");

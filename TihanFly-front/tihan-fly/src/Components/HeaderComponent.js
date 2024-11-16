@@ -1,19 +1,25 @@
-import { useState } from "react";
+import { useContext, useState, useEffect} from "react";
 import tihanFly from '../Assets/tihan.png'
-import Button from "./Buttons/Button";
 import '../Styles/HeaderComponent.css'
-
+import { AppContext } from "../Context/AppContext";
+import Bridge from "../Networking/Bridge";
+import { add } from "ol/coordinate";
 const HearderComponent = () =>{
 
     const [connString, setconnString] = useState('');
     const [isConnected, setisConnected] = useState(false);
-
-    const handleConnect= (e) => {
+    const {selectedDrones} = useContext(AppContext);
+    const {AddSelected} = useContext(AppContext);
+    const bridge = new Bridge();
+    const handleConnect= async (e) => {
         e.preventDefault();
-        console.log(connString);
+        const res = await bridge.simple_send({},"FETCH_LIST")
+        const drone_ids = res.DroneKeys;
+        console.log(drone_ids);       
+        AddSelected(drone_ids);
         setisConnected(!isConnected);
         setconnString("");
-    }
+    };
 
     return(
         <div>
