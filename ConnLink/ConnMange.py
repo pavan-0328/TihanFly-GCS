@@ -6,16 +6,16 @@ from markupsafe import escape
 avail_conn = Link()
 drone_util = DroneUtil()
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+CORS(app)
 
 @app.after_request
 def after_request(response):
-    # Add CORS headers to all responses
-    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+    # Allow all origins
+    response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
     response.headers['Access-Control-Allow-Methods'] = 'GET,POST,PUT,DELETE,OPTIONS'
     return response
-
+    
 @app.route('/api/hi',methods=['GET'])
 def available_conn():
     avail_conn.Refresh()
