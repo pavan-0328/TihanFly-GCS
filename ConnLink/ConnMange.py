@@ -7,16 +7,16 @@ avail_conn = Link()
 drone_util = DroneUtil()
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
-@app.route('/api/',methods=['GET'])
+@app.route('/api/hi',methods=['GET'])
 def available_conn():
     avail_conn.Refresh()
-    return jsonify({"DroneKeys": avail_conn.droneList.keys()})
+    return jsonify({"DroneKeys": list(avail_conn.droneList.keys())})
 
 @app.route('/api/add-drone',methods=['POST'])
 def addDrone():
     data = request.get_json()
     avail_conn.AddLink(data['connUri'])
-    return jsonify({"DroneKeys": avail_conn.droneList.keys()}),200
+    return jsonify({"DroneKeys": list(avail_conn.droneList.keys())}),200
 
 @app.route('/api/arm/<int:drone_id>',methods=['GET'])
 def arm(drone_id):
