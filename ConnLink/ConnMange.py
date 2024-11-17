@@ -7,6 +7,7 @@ avail_conn = Link()
 drone_util = DroneUtil()
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+
 @app.route('/api/hi',methods=['GET'])
 def available_conn():
     avail_conn.Refresh()
