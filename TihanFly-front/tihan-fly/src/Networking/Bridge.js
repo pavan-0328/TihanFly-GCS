@@ -32,6 +32,10 @@ class Bridge{
             "FETCH_LIST":{
                 CMD:'/hi',
                 METHOD:"GET"
+            },
+            "UPLOAD_WAYPOINT":{
+                CMD:'/upload-waypoint/',
+                METHOD: "POST"
             }
         };
     }

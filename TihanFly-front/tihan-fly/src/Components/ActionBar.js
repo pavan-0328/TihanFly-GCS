@@ -5,9 +5,11 @@ import Takeoff from './Buttons/Takeoff';
 import Bridge from '../Networking/Bridge';
 import { AppContext, AppContextProvider } from '../Context/AppContext';
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ActionBar = () =>{
     const {selectedDrones,addSelected} = useContext(AppContext);
+    const navigate = useNavigate();
     const bridge = new Bridge();
     const handleLand = async()=>{
         alert("Landing the Drone");
@@ -18,18 +20,16 @@ const ActionBar = () =>{
         alert("RTL activated");
         await bridge.send({"Mode":"RTL"},"MODE_CHANGE",selectedDrones);
     }
+    const handleWaypoint = () => {
+        navigate('/waypoints');
+    }
     return(
         <div>
         <div className="ActionBar">
             <ArmButton/>
             <Takeoff/>
             <Button onClick={handleLand}>Land</Button>
-            <Button>Waypoint</Button>
-            <div class="waypoint-actions" id="waypointActions">
-                <Button>Add Waypoint</Button>
-                <Button>Upload</Button>
-                <Button>Clear</Button>
-            </div>
+            <Button onClick={handleWaypoint}>Waypoint</Button>
             <Button >Set Flight Mode</Button>
             <Button onClick={handleRTL}>RTL</Button>
             <Button>Spray</Button>
