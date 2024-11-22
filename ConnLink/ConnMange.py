@@ -65,7 +65,7 @@ def changemode(drone_id):
 def upload_waypoint(drone_id):
     data = request.get_json()
     drone_util.upload_waypoints(data)
-
+    
     return jsonify({"status":"Uploaded success fully"}),200
 
 if __name__=='__main__':
