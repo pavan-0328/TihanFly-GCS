@@ -15,7 +15,7 @@ def after_request(response):
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
     response.headers['Access-Control-Allow-Methods'] = 'GET,POST,PUT,DELETE,OPTIONS'
     return response
-    
+
 @app.route('/api/hi',methods=['GET'])
 def available_conn():
     avail_conn.Refresh()
@@ -61,6 +61,12 @@ def changemode(drone_id):
     
     return jsonify({"status": f"Mode changed to {data.get('Mode')} Successfully"}),200
 
+@app.route('/api/upload-waypoint/<int:drone_id>',methods=['POST','GET'])
+def upload_waypoint(drone_id):
+    data = request.get_json()
+    drone_util.upload_waypoints(data)
+
+    return jsonify({"status":"Uploaded success fully"}),200
 
 if __name__=='__main__':
     app.run(host='0.0.0.0', port=5000) 

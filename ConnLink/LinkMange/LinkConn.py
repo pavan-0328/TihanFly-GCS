@@ -3,6 +3,8 @@ import serial.tools.list_ports
 import time
 import socket
 from pymavlink import mavutil
+from pymavlink.dialects.v20 import ardupilotmega as mavlink
+
 import re
 
 class UDP:
@@ -251,5 +253,23 @@ class DroneUtil:
         lat = msg.lat / 1e7  # Latitude in degrees
         lon = msg.lon / 1e7  # Longitude in degrees
         alt = msg.relative_alt / 1000.0  # Altitude above ground in meters (millimeters to meters)
-    
         return {"lat": lat,"lon" : lon,"alt": alt}
+        
+    def upload_waypoints(self,vehicle,points):
+        wp = mavlink.MAVLink_mission_item_message
+        mission = []
+        mlen = len(points)
+        for i in range(1,mlen+1):
+            point = points[i]
+            mission.append(wp(vehicle.target_system, vehicle.target_component, i,
+                       mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT,
+                       mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,
+                       2,  # current and autocontinue
+                       0,  # no hold
+                       point["alt"],  # altitude
+                       points['lat'],  # latitude
+                       points['lon'],  # longitude
+                       0, 0, 0, 0))
+        for m in mission:
+            vehicle.mav.send(m)
+            time.sleep(0.5)
