@@ -253,7 +253,7 @@ class DroneUtil:
         time.sleep(4)
         lat = msg.lat / 1e7  # Latitude in degrees
         lon = msg.lon / 1e7  # Longitude in degrees
-        alt = msg.relative_alt / 1000.0  # Altitude above ground in meters (millimeters to meters)
+        alt = msg.alt / 1000.0  # Altitude above ground in meters (millimeters to meters)
         print(lat,lon,alt)
         return {"lat": lat,"lon" : lon,"alt": alt}
         
