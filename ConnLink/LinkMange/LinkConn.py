@@ -249,13 +249,15 @@ class DroneUtil:
             return 200
     
     def getlocation(self,vehicle):
-        msg = vehicle.recv_match(type='GPS_RAW_INI', blocking=True)
-        time.sleep(4)
-        lat = msg.lat / 1e7  # Latitude in degrees
-        lon = msg.lon / 1e7  # Longitude in degrees
-        alt = msg.alt / 1000.0  # Altitude above ground in meters (millimeters to meters)
-        print(lat,lon,alt)
-        return {"lat": lat,"lon" : lon,"alt": alt}
+        while(True):
+            msg = vehicle.recv_match(type='GPS_RAW_INI', blocking=True)
+            if msg:
+                lat = msg.lat / 1e7  # Latitude in degrees
+                lon = msg.lon / 1e7  # Longitude in degrees
+                alt= msg.alt / 1000.0  # Altitude above ground in meters (millimeters to meters)
+                print(lat,lon,alt)
+                return {"lat": lat,"lon" : lon,"alt": alt}
+            
         
     def upload_waypoints(self,vehicle,points):
         wp = mavlink.MAVLink_mission_item_message
