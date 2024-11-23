@@ -52,7 +52,7 @@ def land(drone_id):
 @app.route('/api/get-location/<int:drone_id>',methods=['GET'])
 def getlocation(drone_id):
     loc = drone_util.getlocation(avail_conn.droneList[drone_id])
-    return jsonify({"id":drone_id,"loc": loc})
+    return jsonify({"id":drone_id,"loc": loc}),200
 
 @app.route('/api/change-mode/<int:drone_id>',methods=['POST','GET'])
 def changemode(drone_id):

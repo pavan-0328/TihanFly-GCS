@@ -35,7 +35,7 @@ const MapComponent = () => {
       try {
         console.log(selectedDrones);
         const droneRes = await bridge.send({}, "GET_LOCATION", selectedDrones);
-        for (const res of droneRes) {
+        for (let res of droneRes) {
             const data = res;
             const loc = data["loc"];
           console.log(data["loc"])
