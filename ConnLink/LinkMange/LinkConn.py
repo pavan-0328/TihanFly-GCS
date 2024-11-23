@@ -249,7 +249,7 @@ class DroneUtil:
             return 200
     
     def getlocation(self,vehicle):
-        msg = vehicle.recv_match(type='GLOBAL_POSITION_INT', blocking=True)
+        msg = vehicle.recv_match(type='GLOBAL_POSITION_INT', blocking=False)
         time.sleep(4)
         lat = msg.lat / 1e7  # Latitude in degrees
         lon = msg.lon / 1e7  # Longitude in degrees
