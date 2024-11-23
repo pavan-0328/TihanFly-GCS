@@ -38,6 +38,7 @@ const MapComponent = () => {
         for (const res of droneRes) {
             const data = res;
             const loc = data["loc"];
+          console.log(data["loc"])
             marker.addMarker(loc["lon"], loc["lat"], data["id"]);
         }
       } catch (error) {
