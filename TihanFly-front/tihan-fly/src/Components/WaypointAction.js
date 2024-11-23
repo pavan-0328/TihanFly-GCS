@@ -17,7 +17,8 @@ const WaypointAction = ({waypoints, Add,setAdd, Delete, setDelete}) =>{
     }
 
     const handleUpload= async ()=>{
-        bridge.send(waypoints.current,"UPLOAD_WAYPOINT",selectedDrones)
+        const data = waypoints.curret
+        bridge.send(data,"UPLOAD_WAYPOINT",selectedDrones)
     }
 
     return (
