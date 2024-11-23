@@ -253,6 +253,7 @@ class DroneUtil:
         lat = msg.lat / 1e7  # Latitude in degrees
         lon = msg.lon / 1e7  # Longitude in degrees
         alt = msg.relative_alt / 1000.0  # Altitude above ground in meters (millimeters to meters)
+        print(lat,lon,alt)
         return {"lat": lat,"lon" : lon,"alt": alt}
         
     def upload_waypoints(self,vehicle,points):
